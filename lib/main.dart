@@ -1,8 +1,8 @@
-import 'package:bookbox/login_screen.dart';
+import 'package:bookbox/screen/login_screen.dart';
+import 'package:bookbox/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbox/login_screen.dart';
-import 'package:bookbox/register_screen.dart';
-import 'package:bookbox/welcome_screen.dart';
+import 'package:bookbox/screen/register_screen.dart';
+import 'package:bookbox/screen/welcome_screen.dart';
 import 'package:get/get.dart';
 
 import 'dart:math';
@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: '/login',
             page: () => LoginScreen(),
+          ),
+          GetPage(
+            name: '/profile',
+            page: () => ProfileScreen(),
           ),
         ]);
   }
