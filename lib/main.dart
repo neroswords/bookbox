@@ -1,7 +1,4 @@
-import 'package:bookbox/screen/login_screen.dart';
-import 'package:bookbox/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbox/screen/register_screen.dart';
 import 'package:bookbox/screen/welcome_screen.dart';
 import 'package:get/get.dart';
 
@@ -9,8 +6,6 @@ import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bookbox/BottomBar.dart';
-import 'package:bookbox/My_book.dart';
 import 'package:search_widget/search_widget.dart';
 
 Future<void> main() async {
@@ -24,26 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Auth',
-        home: WelcomeScreen(),
-        getPages: [
-          GetPage(
-            name: '/welcome',
-            page: () => WelcomeScreen(),
-          ),
-          GetPage(
-            name: '/register',
-            page: () => RegisterScreen(),
-          ),
-          GetPage(
-            name: '/login',
-            page: () => LoginScreen(),
-          ),
-          GetPage(
-            name: '/profile',
-            page: () => ProfileScreen(),
-          ),
-        ]);
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Auth',
+      home: WelcomeScreen(),
+    );
   }
 }

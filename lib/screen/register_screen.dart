@@ -1,6 +1,7 @@
+import 'package:bookbox/My_book.dart';
+import 'package:bookbox/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -58,7 +59,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _login() {
     return FlatButton(
       onPressed: () {
-        Get.toNamed('/login');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
       },
       child: Text(
         "LOGIN NOW",
@@ -108,7 +112,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               UserCredential userCredential =
                   await auth.createUserWithEmailAndPassword(
                       email: _email, password: _password);
-              Get.toNamed('/profile');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyBook(title: 'My Book')),
+              );
             } else {
               print('The password and confirm password does not match!');
             }

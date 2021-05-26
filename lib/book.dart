@@ -1,8 +1,15 @@
-class Book{
+class Book {
   String no;
   String name;
-  String image;
+  String desc;
 
-  Book(this.no, this.name,  this.image);
+  Book({this.no, this.name, this.desc});
+}
 
+class BookList {
+  List volumn;
+  String no;
+  String name;
+
+  BookList(this.no, this.name);
 }
