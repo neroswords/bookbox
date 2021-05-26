@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => MyBook(title: 'My Book')),
+                    builder: (context) => MyBook()),
               );
             } else {
               print('The password and confirm password does not match!');

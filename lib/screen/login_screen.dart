@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookbox/My_book.dart';
+import 'package:bookbox/BottomBar.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -171,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // Get.toNamed('/profile');
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyBook(title: 'My Book')),
+              MaterialPageRoute(builder: (context) => BottomBar()),
             );
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
