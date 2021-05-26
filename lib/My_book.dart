@@ -16,23 +16,80 @@ class MyBook extends StatefulWidget {
 
 class _MyListPageState extends State<MyBook> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  List<BookList> _mybook = [];
   @override
   Widget build(BuildContext context) {
     // List<Book> _mybook = [
     //   Book('111111', 'koladon sathiskun1', 'assets/testimage/2.jpg'),
     // ];
-    List<Book> _mybook = [];
-    // FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(FirebaseAuth.instance.currentUser.uid)
-    //     .collection("Books")
-    //     .get()
-    //     .then((QuerySnapshot snapshot) {
-    //   snapshot.docs.forEach((doc) {
-    //     _mybook.add(Book(doc['code'][0], doc[''], doc['code'][0]));
-    //   });
-    // });
-    firestore
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: FutureBuilder(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (_mybook.length > 0) {
+              return buildList();
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        bottomNavigationBar: BottomBar());
+  }
+
+  Widget buildList() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 30,
+            childAspectRatio: 1 / 1.5),
+        itemCount: _mybook.length,
+        itemBuilder: (context, index) {
+          BookList mybook = _mybook[index];
+          var container = Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 3.0,
+                        blurRadius: 10)
+                  ],
+                  color: Colors.white),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailBook(book: mybook),
+                        ));
+                  },
+                  child: Image.network(
+                    'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${mybook.getNo()}.JPG',
+                    fit: BoxFit.fill,
+                  )
+                  // child: Image.asset(mybook.image,fit: BoxFit.fill,),
+
+                  ));
+          return ClipRRect(
+              borderRadius: BorderRadius.circular(20.0), child: container);
+        },
+      ),
+    );
+  }
+
+  Future<void> getData() async {
+    _mybook = [];
+    await firestore
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get()
@@ -41,63 +98,13 @@ class _MyListPageState extends State<MyBook> {
         Map data = documentSnapshot.data();
         data["owned_book"].forEach((doc) {
           _mybook.add(
-            Book(no: doc['code'], name: doc['name'], desc: ""),
+            BookList(no: doc['code'], name: doc['name'], desc: ""),
           );
-          // _mybook.add(Book(doc['code'], doc['name'], ""));
         });
       } else {
         print('Document does not exist on the database');
       }
     });
-
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
-          child: GridView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 30,
-                childAspectRatio: 1 / 1.5),
-            itemCount: _mybook.length,
-            itemBuilder: (context, index) {
-              Book mybook = _mybook[index];
-              var container = Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3.0,
-                            blurRadius: 10)
-                      ],
-                      color: Colors.white),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailBook(book: mybook),
-                            ));
-                      },
-                      child: Image.network(
-                        'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/9786164476592.JPG',
-                        fit: BoxFit.fill,
-                      )
-                      // child: Image.asset(mybook.image,fit: BoxFit.fill,),
-
-                      ));
-              return ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0), child: container);
-            },
-          ),
-        ),
-        bottomNavigationBar: BottomBar());
   }
 }
 

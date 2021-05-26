@@ -4,24 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:bookbox/book.dart';
 
 class DetailBook extends StatefulWidget {
-  final Book book;
-  DetailBook({Key key , this.book}): super(key: key);
+  final BookList book;
+  DetailBook({Key key, this.book}) : super(key: key);
   @override
   _DetailBookState createState() => _DetailBookState();
 }
 
-class _DetailBookState extends State<DetailBook>{
-  Book _book;
+class _DetailBookState extends State<DetailBook> {
+  BookList _book;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detail book'),),
-      body: Center(
-        child: Text(_book.name)
-        // child: Image.asset(assetpath,fit: BoxFit.fill),
+      appBar: AppBar(
+        title: Text('Detail book'),
       ),
+      body: Center(child: Text(_book.name)
+          // child: Image.asset(assetpath,fit: BoxFit.fill),
+          ),
       bottomNavigationBar: BottomBar(),
     );
   }
-
 }

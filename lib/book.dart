@@ -1,15 +1,19 @@
-class Book {
+class BookList {
   String no;
   String name;
   String desc;
 
-  Book({this.no, this.name, this.desc});
+  BookList({this.no, this.name, this.desc});
+
+  String getNo() => this.no;
+  String getName() => this.name;
+  String getDesc() => this.desc;
 }
 
-class BookList {
+class Book {
   List volumn;
   String no;
   String name;
 
-  BookList(this.no, this.name);
+  Book({this.no, this.name});
 }
