@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:bookbox/book.dart';
 
 class DetailBook extends StatefulWidget {
-  final Book book;
+  final String book;
+  // final String title;
   DetailBook({Key key, this.book}) : super(key: key);
   @override
   _DetailBookState createState() => _DetailBookState();
@@ -40,17 +41,17 @@ class _DetailBookState extends State<DetailBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.book.name),
+        title: Text(widget.book),
       ),
       body: SingleChildScrollView(
           child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-                "https://media.istockphoto.com/photos/old-vintage-treasure-map-nautical-theme-background-picture-id501932644?k=6&m=501932644&s=170667a&w=0&h=ihgbCeJkKbmEwqWw0tr9NaIQXjkXZgAcFMZ2zWcFJiw="),
-            fit: BoxFit.cover,
-          ),
-        ),
+            // image: DecorationImage(
+            //   image: NetworkImage(
+            //       "https://media.istockphoto.com/photos/old-vintage-treasure-map-nautical-theme-background-picture-id501932644?k=6&m=501932644&s=170667a&w=0&h=ihgbCeJkKbmEwqWw0tr9NaIQXjkXZgAcFMZ2zWcFJiw="),
+            //   fit: BoxFit.cover,
+            // ),
+            ),
         child: Column(children: [
           Row(children: [
             Container(
@@ -82,49 +83,95 @@ class _DetailBookState extends State<DetailBook> {
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(right: 0, left: 10.0),
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/wood_bg.jpg"),
-                    fit: BoxFit.cover,
-                  ),
+                  // image: DecorationImage(
+                  //   image: AssetImage("assets/images/wood_bg.jpg"),
+                  //   fit: BoxFit.cover,
+                  // ),
                   borderRadius: BorderRadius.circular(40.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 5.0,
-                        blurRadius: 10)
-                  ],
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //       color: Colors.grey.withOpacity(0.2),
+                  //       spreadRadius: 5.0,
+                  //       blurRadius: 10)
+                  // ],
                   color: Colors.white),
-              // padding: EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: Text('ชื่อเรื่อง   : $title'),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                        child: Text.rich(
+                          
+                            TextSpan(
+                              
+                                // style: DefaultTextStyle.of(context).style,
+                                children: <TextSpan>[
+                          TextSpan(text: 'ชื่อเรื่อง '),
+                          TextSpan(
+                              text: ': $title',
+                              style: TextStyle(fontWeight: FontWeight.bold))
+                        ]))),
                   ),
-                  Container(child: Text('ผู้แต่ง     : $author')),
-                  Container(child: Text('สำนักพิมพ์ : $publisher')),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                        child: Text.rich(
+                            TextSpan(
+                                // style: DefaultTextStyle.of(context).style,
+                                children: <TextSpan>[
+                          TextSpan(text: 'ผู้แต่ง '),
+                          TextSpan(
+                              text: ': $author',
+                              style: TextStyle(fontWeight: FontWeight.bold))
+                        ]))),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                        child: Text.rich(
+                             TextSpan(
+                                // style: DefaultTextStyle.of(context).style,
+                                children: <TextSpan>[
+                          TextSpan(text: 'สำนักพิมพ์ '),
+                          TextSpan(
+                              text: ': $publisher',
+                              style: TextStyle(fontWeight: FontWeight.bold))
+                        ]))),
+                  )
                 ],
               ),
             )
           ]),
           Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            color: Colors.grey[200],
+            alignment: Alignment.centerLeft,
+            child: Text('เรื่องย่อ : ',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                )),
+          ),
+          Container(
             decoration: BoxDecoration(
-                // image : DecorationImage(
-                //   image: AssetImage("assets/images/wood_bg.jpg"),
-                //         fit: BoxFit.cover,
-                // ),
-                // border : BoxBorder.solid,
-                color: Colors.grey[200]),
-            // color: Colors.grey[200],
+              // color: Colors.grey[200]
+              ),
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: Text('\t\t\t\t\t\t\t\t\tเรื่องย่อ : $brief',
+            child: Text('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t$brief',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
             color: Colors.grey[200],
             alignment: Alignment.centerLeft,
-            child: Text('\t\t\t\t\tรายการหนังสือทั้งหมด : ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text('รายการหนังสือทั้งหมด : ',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                )),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
@@ -141,38 +188,34 @@ class _DetailBookState extends State<DetailBook> {
               itemBuilder: (context, index) {
                 // Book mybook = _mybook[index];
                 return InkWell(
-                  child : ClipRRect(
-                    child : Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3.0,
-                            blurRadius: 10)
-                      ],
-                      color: checked[index] == true
-                          ? Color(0xff7c94b6)
-                          : Color(0xFFB71C1C),
-                    ),                     
-                      child: Text(index.toString(),
-                          style: TextStyle(fontSize: 50)),
+                  child: ClipRRect(
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 3.0,
+                              blurRadius: 10)
+                        ],
+                        color: checked[index] == true
+                            ? Color(0x1F000000)
+                            : Color(0xFF00C853),
+                      ),
+                      child: Text((index + 1).toString(),
+                          style: TextStyle(fontSize: 50, color: Colors.white)),
                     ),
-                    
                   ),
                   onTap: () {
-                        checkbook(index);
-                      },
+                    checkbook(index);
+                  },
                 );
-                
-                
               },
             ),
           ),
         ]),
       )),
-      bottomNavigationBar: BottomBar(),
     );
   }
 }
