@@ -9,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyBook extends StatefulWidget {
-  // MyBook({Key key, this.title}) : super(key: key);
+  // MyBook(Key key) : super(key: key);
   // final String title;
   _MyListPageState createState() => _MyListPageState();
 }
@@ -39,7 +39,7 @@ _appBar(height) => PreferredSize(
           right: 20.0,
           child: AppBar(
             backgroundColor: Colors.white,
-            leading: Icon(Icons.menu, color: Theme.of(context).primaryColor,),
+            leading: Icon(Icons.menu_book, color: Theme.of(context).primaryColor,),
             primary: false,
             title: TextField(
                 decoration: InputDecoration(
@@ -49,8 +49,6 @@ _appBar(height) => PreferredSize(
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.search, color: Theme.of(context).primaryColor), onPressed: () {},),
-              IconButton(icon: Icon(Icons.notifications, color: Theme.of(context).primaryColor),
-                onPressed: () {},)
             ],
           ),
         )
@@ -206,7 +204,7 @@ _appBar(height) => PreferredSize(
             },
           ),
         ),
-        bottomNavigationBar: BottomBar());
+        );
 
   }
 }

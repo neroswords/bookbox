@@ -3,52 +3,63 @@ import 'package:bookbox/My_book.dart';
 import 'package:bookbox/screen/profile_screen.dart';
 
 class BottomBar extends StatefulWidget {
+  // int index;
+  // BottomBar(Key key) : super(key: key);
+
   @override
   _BottomBarState createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
-  @override
+ 
   int _selectedIndex = 0;
+  final List<Widget> _children = [
+    MyBook(),
+    ProfileScreen()
+  ];
   void _onItemTapped(int index) {
-    if (index == 0 && index != _selectedIndex) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyBook()),
-      );
+    // if (index == 0 && index != _selectedIndex) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => MyBook()),
+    //   );
       setState(() {
         _selectedIndex = index;
       });
-    } else if (index == 1 && index != _selectedIndex) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => BMIcal()),
-      // );
-      setState(() {
-        _selectedIndex = index;
-      });
-    } else if (index == 2 && index != _selectedIndex) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => BMIcal()),
-      // );
-      setState(() {
-        _selectedIndex = index;
-      });
-    } else if (index == 3 && index != _selectedIndex) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
-      );
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
+    // } else if (index == 1 && index != _selectedIndex) {
+    //   // Navigator.push(
+    //   //   context,
+    //   //   MaterialPageRoute(builder: (context) => BMIcal()),
+    //   // );
+    //   setState(() {
+    //     _selectedIndex = index;
+    //   });
+    // } else if (index == 2 && index != _selectedIndex) {
+    //   // Navigator.push(
+    //   //   context,
+    //   //   MaterialPageRoute(builder: (context) => BMIcal()),
+    //   // );
+    //   setState(() {
+    //     _selectedIndex = index;
+    //   });
+    // } else if (index == 3 && index != _selectedIndex) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => ProfileScreen()),
+    //   );
+    //   setState(() {
+    //     _selectedIndex = index;
+    //   });
+    // }
   }
 
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      
+    // _selectedIndex = widget.index;
+    return 
+    new Scaffold(
+body: _children[_selectedIndex],
+    bottomNavigationBar :  BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
             icon: ImageIcon(AssetImage('assets/images/iconfinder_office-04_809571.png')),
@@ -72,6 +83,8 @@ class _BottomBarState extends State<BottomBar> {
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
       onTap: _onItemTapped,
+    )
     );
+    
   }
 }
