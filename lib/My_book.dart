@@ -13,32 +13,85 @@ class MyBook extends StatefulWidget {
 }
 
 class _MyListPageState extends State<MyBook> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "My Book",
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'RobotoMono'),
+                ),
+              ),
+              color: Theme.of(context).primaryColor,
+              height: height + 75,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 100.0,
+              left: 20.0,
+              right: 20.0,
+              child: AppBar(
+                backgroundColor: Colors.white,
+                leading: Icon(
+                  Icons.book,
+                  color: Theme.of(context).primaryColor,
+                ),
+                primary: false,
+                title: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey))),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+
   List<BookList> _mybook = [];
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("My Book"),
-        ),
-        body: FutureBuilder(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (_mybook.length > 0) {
-              return buildList();
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
-        bottomNavigationBar: BottomBar());
+      appBar: _appBar(AppBar().preferredSize.height),
+      body: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (_mybook.length > 0) {
+            return buildlist();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
   }
 
-  Widget buildList() {
+  Widget buildlist() {
     return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
+      // padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
+
       child: GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
@@ -46,7 +99,7 @@ class _MyListPageState extends State<MyBook> {
             crossAxisCount: 3,
             crossAxisSpacing: 15,
             mainAxisSpacing: 30,
-            childAspectRatio: 1 / 1.5),
+            childAspectRatio: 0.8 / 1.2),
         itemCount: _mybook.length,
         itemBuilder: (context, index) {
           BookList mybook = _mybook[index];
@@ -61,11 +114,14 @@ class _MyListPageState extends State<MyBook> {
                   ],
                   color: Colors.white),
               child: InkWell(
+
+                  // onTap: () {Get.toNamed('/DetailBook/$mybook.no',arguments: mybook);},
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailBook(book: mybook),
+                          builder: (context) =>
+                              DetailBook(book: mybook.getNo()),
                         ));
                   },
                   child: Image.network(
@@ -73,7 +129,6 @@ class _MyListPageState extends State<MyBook> {
                     fit: BoxFit.fill,
                   )
                   // child: Image.asset(mybook.image,fit: BoxFit.fill,),
-
                   ));
           return ClipRRect(
               borderRadius: BorderRadius.circular(20.0), child: container);
