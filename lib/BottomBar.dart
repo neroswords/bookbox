@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookbox/My_book.dart';
+import 'package:bookbox/screen/profile_screen.dart';
 
 class BottomBar extends StatefulWidget {
   @override
@@ -15,33 +16,33 @@ class _BottomBarState extends State<BottomBar> {
         context,
         MaterialPageRoute(builder: (context) => MyBook()),
       );
-       setState(() {
-      _selectedIndex = index;
-    });
+      setState(() {
+        _selectedIndex = index;
+      });
     } else if (index == 1 && index != _selectedIndex) {
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => BMIcal()),
       // );
-       setState(() {
-      _selectedIndex = index;
-    });
+      setState(() {
+        _selectedIndex = index;
+      });
     } else if (index == 2 && index != _selectedIndex) {
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => BMIcal()),
       // );
-       setState(() {
-      _selectedIndex = index;
-    });
+      setState(() {
+        _selectedIndex = index;
+      });
     } else if (index == 3 && index != _selectedIndex) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => BMIcal()),
-      // );
-       setState(() {
-      _selectedIndex = index;
-    });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileScreen()),
+      );
+      setState(() {
+        _selectedIndex = index;
+      });
     }
   }
 

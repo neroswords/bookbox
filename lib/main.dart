@@ -1,16 +1,11 @@
-import 'package:bookbox/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbox/login_screen.dart';
-import 'package:bookbox/register_screen.dart';
-import 'package:bookbox/welcome_screen.dart';
+import 'package:bookbox/screen/welcome_screen.dart';
 import 'package:get/get.dart';
 
 import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bookbox/BottomBar.dart';
-import 'package:bookbox/My_book.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:bookbox/detail_book.dart';
 
@@ -25,31 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Auth',
-        home: MyBook(),
-        getPages: [
-          GetPage(
-            name: '/welcome',
-            page: () => WelcomeScreen(),
-          ),
-          GetPage(
-            name: '/register',
-            page: () => RegisterScreen(),
-          ),
-          GetPage(
-            name: '/login',
-            page: () => LoginScreen(),
-          ),
-          GetPage(
-            name: '/Mybook',
-            page: () => MyBook(),
-          ),
-          // GetPage(
-          //   name: '/Mybook/:book',
-          //   page: () => DetailBook(),
-          // ),
-        ]);
-
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Auth',
+      home: WelcomeScreen(),
+    );
   }
 }
