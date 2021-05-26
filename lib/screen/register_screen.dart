@@ -189,7 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 20),
+          contentPadding: EdgeInsets.all(20.0),
           hintText: hintText,
           hintStyle: TextStyle(
             color: Color(0xffA6B0BD),
@@ -198,7 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           filled: true,
           prefixIcon: prefixIcon,
           prefixIconConstraints: BoxConstraints(
-            minWidth: 75,
+            minWidth: 65,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(

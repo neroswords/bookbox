@@ -63,12 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+      // padding: EdgeInsets.symmetric(horizontal: 20),
       margin: EdgeInsets.only(bottom: 20),
       child: TextField(
         obscureText: isPassword,
         style: GoogleFonts.montserrat(
           textStyle: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Color(0xff000912),
           ),
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 20),
+          contentPadding: EdgeInsets.all(20.0),
           hintText: hintText,
           hintStyle: TextStyle(
             color: Color(0xffA6B0BD),
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
           filled: true,
           prefixIcon: prefixIcon,
           prefixIconConstraints: BoxConstraints(
-            minWidth: 75,
+            minWidth: 65,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(

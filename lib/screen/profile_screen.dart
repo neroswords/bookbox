@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],),
             ) ,
           ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 
@@ -104,18 +105,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
+        onPressed: () {
+          auth.signOut();
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            }
       ),
     );
-        body: Center(
-            child: FlatButton(
-                child: Text('Logout'),
-                onPressed: () {
-                  auth.signOut();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                })),
-        bottomNavigationBar: BottomBar());
-  }
+  //       body: Center(
+  //           child: FlatButton(
+  //               child: Text('Logout'),
+  //               onPressed: () {
+  //                 auth.signOut();
+  //                 Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(builder: (context) => LoginScreen()),
+  //                 );
+  //               })),
+  //       bottomNavigationBar: BottomBar());
+  // }
+}
 }
