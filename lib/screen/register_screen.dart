@@ -27,20 +27,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 _logoText(),
                 _inputField(
-                    Icon(Icons.person_outline,
-                        size: 30, color: Color(0xffA6B0BD)),
+                    Icon(Icons.email_outlined,
+                        size: 25, color: Color(0xffA6B0BD)),
                     "Email",
                     false,
                     false),
                 _inputField(
                     Icon(Icons.lock_outline,
-                        size: 30, color: Color(0xffA6B0BD)),
+                        size: 25, color: Color(0xffA6B0BD)),
                     "Password",
                     true,
                     false),
                 _inputField(
                     Icon(Icons.lock_outline,
-                        size: 30, color: Color(0xffA6B0BD)),
+                        size: 25, color: Color(0xffA6B0BD)),
                     "Comfirm Password",
                     true,
                     true),
@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(50),
+          Radius.circular(20),
         ),
         boxShadow: [
           BoxShadow(
@@ -159,9 +159,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         obscureText: isPassword,
         style: GoogleFonts.montserrat(
           textStyle: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Color(0xff000912),
+            
           ),
         ),
         onChanged: (value) {

@@ -27,13 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 // _logo(),
                 _logoText(),
                 _inputField(
-                    Icon(Icons.person_outline,
-                        size: 30, color: Color(0xffA6B0BD)),
+                    Icon(Icons.email_outlined,
+                        size: 25, color: Color(0xffA6B0BD)),
                     "Email",
                     false),
                 _inputField(
                     Icon(Icons.lock_outline,
-                        size: 30, color: Color(0xffA6B0BD)),
+                        size: 25, color: Color(0xffA6B0BD)),
                     "Password",
                     true),
                 _loginBtn(),

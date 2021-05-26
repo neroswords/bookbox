@@ -15,7 +15,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
-}
+
 
 
 Widget _logo() {
@@ -63,7 +63,7 @@ Widget _logo() {
 Widget _loginBtn() {
   return Container(
     width: double.infinity,
-    margin: EdgeInsets.only(bottom: 20),
+    // margin: EdgeInsets.only(bottom: 50),
     decoration: BoxDecoration(
       color: Color(0xff008FFF),
       borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -129,4 +129,6 @@ Widget _signupBtn() {
       
     ),
   );
+}
+
 }
