@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookbox/My_book.dart';
 import 'package:bookbox/screen/profile_screen.dart';
+import 'package:bookbox/detail_book.dart';
 
 class BottomBar extends StatefulWidget {
   // int index;
@@ -15,49 +16,20 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   final List<Widget> _children = [
     MyBook(),
+    DetailBook(),
     ProfileScreen()
   ];
   void _onItemTapped(int index) {
-    // if (index == 0 && index != _selectedIndex) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => MyBook()),
-    //   );
       setState(() {
         _selectedIndex = index;
       });
-    // } else if (index == 1 && index != _selectedIndex) {
-    //   // Navigator.push(
-    //   //   context,
-    //   //   MaterialPageRoute(builder: (context) => BMIcal()),
-    //   // );
-    //   setState(() {
-    //     _selectedIndex = index;
-    //   });
-    // } else if (index == 2 && index != _selectedIndex) {
-    //   // Navigator.push(
-    //   //   context,
-    //   //   MaterialPageRoute(builder: (context) => BMIcal()),
-    //   // );
-    //   setState(() {
-    //     _selectedIndex = index;
-    //   });
-    // } else if (index == 3 && index != _selectedIndex) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => ProfileScreen()),
-    //   );
-    //   setState(() {
-    //     _selectedIndex = index;
-    //   });
-    // }
   }
 
   Widget build(BuildContext context) {
     // _selectedIndex = widget.index;
     return 
     new Scaffold(
-body: _children[_selectedIndex],
+    body: _children[_selectedIndex],
     bottomNavigationBar :  BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[

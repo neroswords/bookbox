@@ -16,71 +16,134 @@ class MyBook extends StatefulWidget {
 }
 
 class _MyListPageState extends State<MyBook> {
-
-_appBar(height) => PreferredSize(
-    preferredSize:  Size(MediaQuery.of(context).size.width, height+80 ),
-    child: Stack(
-      children: <Widget>[
-        Container(     // Background
-          child: Center(
-            child: Text("My Book", style: 
-                GoogleFonts.montserrat(
-            textStyle: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "My Book",
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'RobotoMono'),
+                ),
+              ),
+              color: Theme.of(context).primaryColor,
+              height: height + 75,
+              width: MediaQuery.of(context).size.width,
             ),
-          ),),),
-          color:Theme.of(context).primaryColor,
-          height: height+75,
-          width: MediaQuery.of(context).size.width,
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 100.0,
+              left: 20.0,
+              right: 20.0,
+              child: AppBar(
+                backgroundColor: Colors.white,
+                leading: Icon(
+                  Icons.book,
+                  color: Theme.of(context).primaryColor,
+                ),
+                primary: false,
+                title: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey))),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
+      );
 
-        Container(),   // Required some widget in between to float AppBar
-
-        Positioned(    // To take AppBar Size only
-          top: 100.0,
-          left: 20.0,
-          right: 20.0,
-          child: AppBar(
-            backgroundColor: Colors.white,
-            leading: Icon(Icons.menu_book, color: Theme.of(context).primaryColor,),
-            primary: false,
-            title: TextField(
-                decoration: InputDecoration(
-                    hintText: "Search",
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(color: Colors.grey))),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.search, color: Theme.of(context).primaryColor), onPressed: () {},),
-            ],
-          ),
-        )
-
-      ],
-    ),
-  );
-
-
+  List<BookList> _mybook = [];
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
-    // List<Book> _mybook = [
-    //   Book('111111', 'koladon sathiskun1', 'assets/testimage/2.jpg'),
-    // ];
-    List<Book> _mybook = [];
-    // FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(FirebaseAuth.instance.currentUser.uid)
-    //     .collection("Books")
-    //     .get()
-    //     .then((QuerySnapshot snapshot) {
-    //   snapshot.docs.forEach((doc) {
-    //     _mybook.add(Book(doc['code'][0], doc[''], doc['code'][0]));
-    //   });
-    // });
-    firestore
+    return Scaffold(
+        appBar: _appBar(AppBar().preferredSize.height),
+        body: FutureBuilder(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (_mybook.length > 0) {
+              return buildlist();
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      );
+  }
+
+  Widget buildlist() {
+    return Container(
+        // padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
+
+        child: GridView.builder(
+          
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 30,
+              childAspectRatio: 0.8 / 1.2),
+          itemCount: _mybook.length,
+          itemBuilder: (context, index) {
+            BookList mybook = _mybook[index];
+            var container = Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 3.0,
+                          blurRadius: 10)
+                    ],
+                    color: Colors.white),
+                child: InkWell(
+
+                    // onTap: () {Get.toNamed('/DetailBook/$mybook.no',arguments: mybook);},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailBook(book: mybook.getNo()),
+                          ));
+                    },
+                    child: Image.network(
+                      'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${mybook.getNo()}.JPG',
+                      fit: BoxFit.fill,
+                    )
+                    // child: Image.asset(mybook.image,fit: BoxFit.fill,),
+                    ));
+            return ClipRRect(
+                borderRadius: BorderRadius.circular(20.0), child: container);
+          },
+        ),
+      );
+
+  }
+
+  Future<void> getData() async {
+    _mybook = [];
+    await firestore
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get()
@@ -89,160 +152,12 @@ _appBar(height) => PreferredSize(
         Map data = documentSnapshot.data();
         data["owned_book"].forEach((doc) {
           _mybook.add(
-            Book(no: doc['code'], name: doc['name'], desc: ""),
+            BookList(no: doc['code'], name: doc['name'], desc: ""),
           );
-          // _mybook.add(Book(doc['code'], doc['name'], ""));
         });
       } else {
         print('Document does not exist on the database');
       }
     });
-
-    return SafeArea
-    (child: Scaffold (
-// <<<<<<< HEAD
-//       appBar: _appBar(AppBar().preferredSize.height),
-      
-//       body: Container(
-
-      
-
-
-        
-//         // padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
-        
-//         child: GridView.builder(
-          
-//           shrinkWrap: true,
-//           scrollDirection: Axis.vertical,
-//           gridDelegate : SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 15 , mainAxisSpacing: 30, childAspectRatio : 0.8/1.2),
-//           itemCount: _mybook.length,
-          
-//           itemBuilder: (context, index){
-//             Book mybook = _mybook[index];
-//             var container = Container(
-              
-//               decoration:  BoxDecoration(
-//               borderRadius: BorderRadius.circular(30.0),
-              
-//               boxShadow: [
-//                 BoxShadow(
-//                   color: Colors.grey.withOpacity(0.2),
-//                   spreadRadius: 3.0,
-//                   blurRadius: 10
-//                 )
-//               ],
-//               color: Colors.white
-              
-//             ),
-//             child: InkWell(
-              
-//               // onTap: () {Get.toNamed('/DetailBook/$mybook.no',arguments: mybook);},
-//               onTap: () {
-//                 Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context)=>DetailBook(book: mybook),
-//               )
-//             );
-//           },
-//               child : Image.network('https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/9786164476592.JPG',fit: BoxFit.fill,)
-//               // child: Image.asset(mybook.image,fit: BoxFit.fill,),
-//             )
-//               );
-//             return ClipRRect(
-//               borderRadius: BorderRadius.circular(20.0),
-//               child: container
-//             );
-            
-//           },
-          
-//         ),
-        
-//       ),
-      
-//       bottomNavigationBar: BottomBar()
-        
-      
-//     );
-// =======
-        appBar: _appBar(AppBar().preferredSize.height),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0),
-          child: GridView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 30,
-                childAspectRatio: 1 / 1.5),
-            itemCount: _mybook.length,
-            itemBuilder: (context, index) {
-              Book mybook = _mybook[index];
-              var container = Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3.0,
-                            blurRadius: 10)
-                      ],
-                      color: Colors.white),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailBook(book: mybook),
-                            ));
-                      },
-                      child: Image.network(
-                        'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/9786164476592.JPG',
-                        fit: BoxFit.fill,
-                      )
-                      // child: Image.asset(mybook.image,fit: BoxFit.fill,),
-
-                      ));
-              return ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0), child: container);
-            },
-          ),
-        ),
-      ), 
-    );
   }
 }
-
-// class GetUserbooks extends StatelessWidget {
-//   final String documentId;
-
-//   GetUserbooks(this.documentId);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-//     return FutureBuilder<DocumentSnapshot>(
-//       future: users.doc(FirebaseAuth.instance.currentUser.uid).get(),
-//       builder:
-//           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-//         if (snapshot.hasError) {
-//           return Text("Something went wrong");
-//         }
-
-//         if (snapshot.hasData && !snapshot.data.exists) {
-//           return Text("Document does not exist");
-//         }
-
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           Map<String, dynamic> data = snapshot.data.data();
-//           return Text("Full Name: ${data['full_name']} ${data['last_name']}");
-//         }
-
-//         return Text("loading");
-//       },
-//     );
-//   }
-// }
