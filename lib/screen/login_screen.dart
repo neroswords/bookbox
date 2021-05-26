@@ -1,7 +1,8 @@
+import 'package:bookbox/screen/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
+import 'package:bookbox/My_book.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -115,7 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _signUp() {
     return FlatButton(
       onPressed: () {
-        Get.toNamed('/register');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RegisterScreen()),
+        );
       },
       child: Text(
         "SIGN UP NOW",
@@ -163,7 +167,11 @@ class _LoginScreenState extends State<LoginScreen> {
           try {
             UserCredential userCredential = await auth
                 .signInWithEmailAndPassword(email: _email, password: _password);
-            Get.toNamed('/profile');
+            // Get.toNamed('/profile');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyBook(title: 'My Book')),
+            );
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
               print('No user found for that email.');
