@@ -13,7 +13,7 @@ class _BottomBarState extends State<BottomBar> {
     if (index == 0 && index != _selectedIndex) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyBook(title: 'My Book')),
+        MaterialPageRoute(builder: (context) => MyBook()),
       );
        setState(() {
       _selectedIndex = index;
@@ -43,36 +43,33 @@ class _BottomBarState extends State<BottomBar> {
       _selectedIndex = index;
     });
     }
-    // setState(() {
-    //   _selectedIndex = index;
-    // });
   }
 
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book, size: 30),
-            label: 'Home',
-            backgroundColor: Colors.lightBlue),
+            icon: ImageIcon(AssetImage('assets/images/iconfinder_office-04_809571.png')),
+            label: 'My Book',
+            backgroundColor: Colors.white),
         BottomNavigationBarItem(
             icon: Icon(Icons.menu_book_rounded, size: 30),
-            label: 'Business',
-            backgroundColor: Colors.lightBlue),
+            label: 'Add Book',
+            backgroundColor: Colors.white),
         BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_sharp, size: 30),
-            label: 'School',
-            backgroundColor: Colors.lightBlue),
+            icon: ImageIcon(AssetImage('assets/images/iconfinder_finance-10_808669.png'),size: 25,),
+            label: 'Scan Barcode',
+            backgroundColor: Colors.white),
         BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-            ),
-            label: 'School',
-            backgroundColor: Colors.lightBlue),
+            icon: ImageIcon(AssetImage('assets/images/iconfinder_icons_user2_1564535.png'),size: 25,),
+            label: 'Profile',
+            backgroundColor: Colors.white),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
+      elevation : 0.5,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
       onTap: _onItemTapped,
     );
   }

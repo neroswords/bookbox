@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:bookbox/BottomBar.dart';
 import 'package:bookbox/My_book.dart';
 import 'package:search_widget/search_widget.dart';
+import 'package:bookbox/detail_book.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Auth',
-        home: WelcomeScreen(),
+        home: MyBook(),
         getPages: [
           GetPage(
             name: '/welcome',
@@ -40,6 +41,15 @@ class MyApp extends StatelessWidget {
             name: '/login',
             page: () => LoginScreen(),
           ),
+          GetPage(
+            name: '/Mybook',
+            page: () => MyBook(),
+          ),
+          // GetPage(
+          //   name: '/Mybook/:book',
+          //   page: () => DetailBook(),
+          // ),
         ]);
+
   }
 }
