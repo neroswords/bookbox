@@ -9,8 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyBook extends StatefulWidget {
-  MyBook({Key key, this.title}) : super(key: key);
-  final String title;
   _MyListPageState createState() => _MyListPageState();
 }
 
@@ -19,12 +17,9 @@ class _MyListPageState extends State<MyBook> {
   List<BookList> _mybook = [];
   @override
   Widget build(BuildContext context) {
-    // List<Book> _mybook = [
-    //   Book('111111', 'koladon sathiskun1', 'assets/testimage/2.jpg'),
-    // ];
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text("My Book"),
         ),
         body: FutureBuilder(
           future: getData(),
@@ -107,35 +102,3 @@ class _MyListPageState extends State<MyBook> {
     });
   }
 }
-
-// class GetUserbooks extends StatelessWidget {
-//   final String documentId;
-
-//   GetUserbooks(this.documentId);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-//     return FutureBuilder<DocumentSnapshot>(
-//       future: users.doc(FirebaseAuth.instance.currentUser.uid).get(),
-//       builder:
-//           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-//         if (snapshot.hasError) {
-//           return Text("Something went wrong");
-//         }
-
-//         if (snapshot.hasData && !snapshot.data.exists) {
-//           return Text("Document does not exist");
-//         }
-
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           Map<String, dynamic> data = snapshot.data.data();
-//           return Text("Full Name: ${data['full_name']} ${data['last_name']}");
-//         }
-
-//         return Text("loading");
-//       },
-//     );
-//   }
-// }
