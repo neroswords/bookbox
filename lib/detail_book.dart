@@ -40,12 +40,17 @@ class _DetailBookState extends State<DetailBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: Text(widget.book),
       ),
       body: SingleChildScrollView(
           child: Container(
-        decoration: BoxDecoration(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage("assets/backgrounds/wood.jpg"),
+            fit: BoxFit.cover,
+          ),
             ),
         child: Column(children: [
           Row(children: [
@@ -53,13 +58,11 @@ class _DetailBookState extends State<DetailBook> {
               margin: const EdgeInsets.fromLTRB(20, 30, 0, 30),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 5.0,
-                        blurRadius: 10)
-                  ],
-                  color: Colors.white),
+                  border: Border.all(
+                  color: Colors.brown,
+                  width: 5,
+                ),
+                  ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30.0),
                 child: Image.network(image, fit: BoxFit.fill),
@@ -74,17 +77,11 @@ class _DetailBookState extends State<DetailBook> {
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(right: 0, left: 10.0),
               decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //   image: AssetImage("assets/images/wood_bg.jpg"),
-                  //   fit: BoxFit.cover,
-                  // ),
+                  border: Border.all(
+                  color: Colors.brown,
+                  width: 5,
+                ),
                   borderRadius: BorderRadius.circular(40.0),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //       color: Colors.grey.withOpacity(0.2),
-                  //       spreadRadius: 5.0,
-                  //       blurRadius: 10)
-                  // ],
                   color: Colors.white),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -124,8 +121,16 @@ class _DetailBookState extends State<DetailBook> {
             )
           ]),
           Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+ 
+            ),
+            
             margin: const EdgeInsets.only(left: 20, right: 20),
-            color: Colors.grey[200],
             alignment: Alignment.centerLeft,
             child: Text('เรื่องย่อ : ',
                 style: TextStyle(
@@ -135,14 +140,29 @@ class _DetailBookState extends State<DetailBook> {
                 )),
           ),
           Container(
-            decoration: BoxDecoration(),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+            ),
+            
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Text('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t$brief',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Container(
+            
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+ 
+            ),
             margin: const EdgeInsets.only(left: 20, right: 20),
-            color: Colors.grey[200],
             alignment: Alignment.centerLeft,
             child: Text('รายการหนังสือทั้งหมด : ',
                 style: TextStyle(
@@ -158,7 +178,7 @@ class _DetailBookState extends State<DetailBook> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 30,
                   childAspectRatio: 1 / 1.5),
@@ -176,8 +196,8 @@ class _DetailBookState extends State<DetailBook> {
                             : SvgPicture.asset("assets/icons/book_grey.svg"),
                       ),
                       Positioned(
-                          right: 17,
-                          top: 20,
+                          right: 26,
+                          top: 34,
                           child: Text('$index', style: TextStyle(fontSize: 40)))
                     ],
                   ))),
