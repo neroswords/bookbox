@@ -243,6 +243,7 @@ class _DetailBookState extends State<DetailBook> {
                   child: ClipRRect(
                       child: Container(
                           child: Stack(
+                    fit: StackFit.loose,
                     alignment: AlignmentDirectional.center,
                     children: [
                       new Positioned.fill(
@@ -251,10 +252,10 @@ class _DetailBookState extends State<DetailBook> {
                             : SvgPicture.asset("assets/icons/book_grey.svg"),
                       ),
                       Positioned(
-                          right: 26,
+
                           top: 34,
                           child: Text(volumn[index],
-                              style: TextStyle(fontSize: 40)))
+                              style: TextStyle(fontSize: 36)))
                     ],
                   ))),
                   onTap: () {
