@@ -11,6 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class BottomBar extends StatefulWidget {
+  // int index;
+  // BottomBar(Key key) : super(key: key);
+
   @override
   _BottomBarState createState() => _BottomBarState();
 }
