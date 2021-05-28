@@ -11,8 +11,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'dart:async';
 class MyBook extends StatefulWidget {
-  // MyBook(Key key) : super(key: key);
-  // final String title;
   _MyListPageState createState() => _MyListPageState();
 }
 
@@ -135,10 +133,10 @@ void dispose() {
 
   Widget buildlist() {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal:5 , vertical:10),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: _searchList.length != 0 || controller.text.isNotEmpty
             ? GridView.builder(
-              primary: false,
+                primary: false,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -200,7 +198,7 @@ void dispose() {
                 },
               )
             : GridView.builder(
-              primary: false,
+                primary: false,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

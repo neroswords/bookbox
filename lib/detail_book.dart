@@ -1,4 +1,6 @@
 import 'package:bookbox/BottomBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbox/book.dart';
@@ -13,16 +15,14 @@ class DetailBook extends StatefulWidget {
 }
 
 class _DetailBookState extends State<DetailBook> {
-  final String title = 'ตัวประกอบอย่างตูช่างอยู่ยากในโลกเกมจีบหนุ่ม';
-  final String brief =
-      'ลีออน ผู้มีอดีตชาติเป็นพนักงานเงินเดือนในญี่ปุ่น ซึ่งเกิดใหม่ในโลก “เกมจีบหนุ่ม” ที่มีดาบและเวทมนตร์ ก็พบกับความสิ้นหวังกับโลกที่ผู้หญิงเป็นใหญ่ ในโลกใบนี้ ผู้ชายมีค่าแค่ปศุสัตว์ไว้เลี้ยงดูผู้หญิง ผู้ที่เป็นข้อยกเว้น มีแค่กองกำลังหนุ่มหล่อของเจ้าชายรัชทายาทที่เป็นตัวละครให้จีบในเกมเท่านั้น ในสภาพแวดล้อมอันแสนจะไร้เหตุผลสิ้นดี ลีออนก็มีอาวุธอยู่อย่างหนึ่ง ใช่แล้ว มันคือความรู้ของเกมนี้ที่เขาถูกน้องสาวแก่แดดบังคับขู่เข็ญให้เล่นในชาติก่อน ลีออนที่เคยคิดอยากใช้ชีวิตเก็บตัวเงียบๆ ในบ้านนอก ก็หันมาใช้ความรู้นั้นต่อต้านเหล่าผู้หญิงและพวกหน้าหล่อที่ชอบทำอะไรตามใจตัวเอง นิยายแฟนตาซีของการโค่นล้มผู้อยู่เหนือกว่าอย่างสบายๆ (?) โดยพระเอกนอกรีต ได้เริ่มขึ้นแล้ว!';
-  final String author = 'Mishima Yomu';
-  final String publisher = 'Luckpim';
-  final String image =
-      'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/9786164476592.JPG';
+  // String title, brief, author, publisher, image;
+  // int volumn;
+  String title, image, author, brief, publisher;
+  // widget.book;
 
-  final List a = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  List checked = [true, false, false, false, false, false, false, false];
+  List volumn = [];
+  List checked = [];
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   void checkbook(index) {
     setState(() {
@@ -37,32 +37,92 @@ class _DetailBookState extends State<DetailBook> {
     });
   }
 
+  Future<bool> getData() async {
+    await firestore
+        .collection('Books')
+        .where('code', arrayContainsAny: [widget.book])
+        .get()
+        .then((QuerySnapshot snapshot) => {
+              if (snapshot.docs.isNotEmpty)
+                {
+                  snapshot.docs.forEach((doc) {
+                    Map data = doc.data();
+                    String code = data["code"][0];
+                    volumn = data["volumn"];
+                    title = doc.id;
+                    image =
+                        'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${code}.JPG';
+                  })
+                }
+            });
+    await firestore
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        checked = [];
+        Map data = documentSnapshot.data();
+        data["owned_book"].forEach((ownvol) {
+          if (ownvol["name"] == title) {
+            volumn.forEach((vol) {
+              if (ownvol["on_hand"].contains(vol)) {
+                checked.add(true);
+              } else {
+                checked.add(false);
+              }
+            });
+          }
+        });
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      body: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData == true && title != null) {
+            return buildlist();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildlist() {
+    return Scaffold(
       appBar: AppBar(
         title: Text(widget.book),
       ),
       body: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
+        decoration: BoxDecoration(
+          image: DecorationImage(
             image: AssetImage("assets/backgrounds/wood.jpg"),
             fit: BoxFit.cover,
           ),
-            ),
+        ),
         child: Column(children: [
           Row(children: [
             Container(
               margin: const EdgeInsets.fromLTRB(20, 30, 0, 30),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.0),
-                  border: Border.all(
+                borderRadius: BorderRadius.circular(40.0),
+                border: Border.all(
                   color: Colors.brown,
                   width: 5,
                 ),
-                  ),
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30.0),
                 child: Image.network(image, fit: BoxFit.fill),
@@ -78,9 +138,9 @@ class _DetailBookState extends State<DetailBook> {
               margin: const EdgeInsets.only(right: 0, left: 10.0),
               decoration: BoxDecoration(
                   border: Border.all(
-                  color: Colors.brown,
-                  width: 5,
-                ),
+                    color: Colors.brown,
+                    width: 5,
+                  ),
                   borderRadius: BorderRadius.circular(40.0),
                   color: Colors.white),
               child: Column(
@@ -124,12 +184,10 @@ class _DetailBookState extends State<DetailBook> {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
- 
+                color: Colors.black,
+                width: 2,
+              ),
             ),
-            
             margin: const EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.centerLeft,
             child: Text('เรื่องย่อ : ',
@@ -143,24 +201,21 @@ class _DetailBookState extends State<DetailBook> {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
+                color: Colors.black,
+                width: 2,
+              ),
             ),
-            
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Text('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t$brief',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Container(
-            
             decoration: BoxDecoration(
               color: Colors.grey[200],
               border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
- 
+                color: Colors.black,
+                width: 2,
+              ),
             ),
             margin: const EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.centerLeft,
@@ -182,7 +237,7 @@ class _DetailBookState extends State<DetailBook> {
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 30,
                   childAspectRatio: 1 / 1.5),
-              itemCount: a.length,
+              itemCount: volumn.length,
               itemBuilder: (context, index) {
                 return InkWell(
                   child: ClipRRect(
@@ -198,7 +253,8 @@ class _DetailBookState extends State<DetailBook> {
                       Positioned(
                           right: 26,
                           top: 34,
-                          child: Text('$index', style: TextStyle(fontSize: 40)))
+                          child: Text(volumn[index],
+                              style: TextStyle(fontSize: 40)))
                     ],
                   ))),
                   onTap: () {
