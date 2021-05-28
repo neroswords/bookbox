@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'dart:async';
 class MyBook extends StatefulWidget {
   // MyBook(Key key) : super(key: key);
   // final String title;
@@ -16,6 +17,7 @@ class MyBook extends StatefulWidget {
 }
 
 class _MyListPageState extends State<MyBook> {
+  Timer debouncer;
   TextEditingController controller = new TextEditingController();
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
@@ -58,47 +60,55 @@ class _MyListPageState extends State<MyBook> {
                       hintText: "Search",
                       border: InputBorder.none,
                       hintStyle: TextStyle(color: Colors.grey)),
-                  onChanged: onClearText,
+                  onChanged: onSearchTextChanged,
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.search,
-                        color: Theme.of(context).primaryColor),
-                    onPressed: () {
-                      onSearchTextChanged(controller.text);
-                    },
-                  ),
-                ],
+              
               ),
             )
           ],
         ),
       );
 
-  onClearText(String text){
-    if (text.isEmpty) {
-      print('b');
-      _searchList = [];
-      setState(() {});
-      return;
+@override
+void dispose() {
+  debouncer.cancel();
+  super.dispose();
+}
+
+ void debounce(
+    VoidCallback callback, {
+    Duration duration = const Duration(milliseconds: 300),
+  }) {
+    if (debouncer != null) {
+      debouncer.cancel();
     }
+    debouncer = Timer(duration, callback);
+  }
+
+
+  onSearchTextChanged(String text) async => debounce(() async  {
     
-  }
-
-  onSearchTextChanged(String text) {
     _searchList = [];
-
     if (text.isEmpty) {
-    } else {
-      _mybook.forEach((mybook) {
-        if (mybook.name.toLowerCase().contains(text.toLowerCase()))
-          _searchList.add(mybook);
-      });
-    }
 
+    } else {
+      _searchList = [];
+      _mybook.forEach((mybook) {
+        if (mybook.name.toLowerCase().contains(text.toLowerCase())){
+          _searchList.add(mybook);
+          print('after $text');
+        }
+
+      });
+      
+    }
     setState(() {});
-    return;
+    print('$_searchList');
+
   }
+  );
+
+
 
   List<BookList> _searchList = [];
   List<BookList> _mybook = [];
@@ -125,7 +135,6 @@ class _MyListPageState extends State<MyBook> {
 
   Widget buildlist() {
     return Container(
-        
         padding: EdgeInsets.symmetric(horizontal:5 , vertical:10),
         child: _searchList.length != 0 || controller.text.isNotEmpty
             ? GridView.builder(
@@ -134,8 +143,8 @@ class _MyListPageState extends State<MyBook> {
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
                     childAspectRatio: 0.8 / 1.2),
                 itemCount: _searchList.length,
                 itemBuilder: (context, index) {
@@ -149,21 +158,29 @@ class _MyListPageState extends State<MyBook> {
                                   DetailBook(book: mybook.getNo()),
                             ));
                       },
-                      child: Column(children: [
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                         Stack(
                           children: [
                             Container(
                               decoration: BoxDecoration(
                                       border: Border.all(
-                                        width:3,               
+                                        width:1,               
                                       ),
                                     ),
                               child: Column(children: [
                                 Container(
-                                    height: 179,
+                                    height: MediaQuery.of(context).size.height*0.22,
+                                    width: MediaQuery.of(context).size.height*0.22,
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width:3,               
+                                      border: Border(
+                                        top: BorderSide(
+                                          width: 1,
+                                        ),
+                                        bottom: BorderSide(
+                                          width: 1,
+                                        )               
                                       ),
                                     ),
                                     child: Image.network(
@@ -203,27 +220,31 @@ class _MyListPageState extends State<MyBook> {
                                   DetailBook(book: mybook.getNo()),
                             ));
                       },
-                      child: Column(children: [
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                         Stack(
                           children: [
                             Container(
                               decoration: BoxDecoration(
                                       border: Border.all(
-                                        width:3,               
+                                        width:1,               
                                       ),
                                     ),
                               child: Column(children: [
                                 Container(
-                                    height: 179,
+                                    height: MediaQuery.of(context).size.height*0.22,
+                                    width: MediaQuery.of(context).size.height*0.22,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        width:3,               
+                                        width:1,               
                                       ),
                                     ),
                                     child: Image.network(
                                       'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${mybook.getNo()}.JPG',
                                       fit: BoxFit.fill,
                                     )),
+                                    
                                 Container(
                                     child: Text(mybook.name,
                                         overflow: TextOverflow.ellipsis))
@@ -247,6 +268,7 @@ class _MyListPageState extends State<MyBook> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         Map data = documentSnapshot.data();
+        _mybook = [];
         data["owned_book"].forEach((doc) {
           _mybook.add(
             BookList(no: doc['code'], name: doc['name'], desc: ""),
