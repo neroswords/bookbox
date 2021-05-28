@@ -1,3 +1,4 @@
+import 'package:bookbox/screen/add_book_screen.dart';
 import 'package:bookbox/screen/barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbox/My_book.dart';
@@ -22,7 +23,7 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   final List<Widget> _children = [
     MyBook(),
-    DetailBook(),
+    AddBook(),
     ScannerScreen(),
     ProfileScreen()
   ];

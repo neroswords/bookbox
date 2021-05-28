@@ -45,9 +45,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    if (auth.currentUser != null) {
-      print(auth.currentUser);
-    }
     return SafeArea(
       child: Scaffold(
         appBar: _appBar(AppBar().preferredSize.height),
@@ -64,12 +61,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ProfileMenu(
                   text: "Term Of Service",
                   icon: "assets/icons/Question mark.svg",
-                  press : () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TermOfService()),
-                  );
-                },
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TermOfService()),
+                    );
+                  },
                 ),
                 _logoutBtn(),
               ],
@@ -91,8 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           overflow: Overflow.visible,
           children: [
             CircleAvatar(
-                child: SvgPicture.asset("assets/icons/User.svg"),
-                ),
+              child: SvgPicture.asset("assets/icons/User.svg"),
+            ),
             // Positioned(
             //   right: -16,
             //   bottom: 0,

@@ -1,5 +1,6 @@
 import 'package:bookbox/My_book.dart';
 import 'package:bookbox/screen/login_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,14 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String _email, _password, _confirmPassword;
   final auth = FirebaseAuth.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+  Future<void> addUser() {
+    return users
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .set({"owned_book": []});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -112,10 +121,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               UserCredential userCredential =
                   await auth.createUserWithEmailAndPassword(
                       email: _email, password: _password);
+              addUser();
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => MyBook()),
+                MaterialPageRoute(builder: (context) => MyBook()),
               );
             } else {
               print('The password and confirm password does not match!');
@@ -170,7 +179,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Color(0xff000912),
-            
           ),
         ),
         onChanged: (value) {

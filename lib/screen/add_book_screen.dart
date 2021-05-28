@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'book.dart';
 import 'package:bookbox/detail_book.dart';
 import 'package:bookbox/BottomBar.dart';
 import 'package:search_widget/search_widget.dart';
@@ -9,13 +8,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'dart:async';
-class MyBook extends StatefulWidget {
-  _MyListPageState createState() => _MyListPageState();
+import '../book.dart';
+
+class AddBook extends StatefulWidget {
+  _AddBookPageState createState() => _AddBookPageState();
 }
 
-class _MyListPageState extends State<MyBook> {
-  Timer debouncer;
+class _AddBookPageState extends State<AddBook> {
   TextEditingController controller = new TextEditingController();
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
@@ -58,55 +57,45 @@ class _MyListPageState extends State<MyBook> {
                       hintText: "Search",
                       border: InputBorder.none,
                       hintStyle: TextStyle(color: Colors.grey)),
-                  onChanged: onSearchTextChanged,
+                  onChanged: onClearText,
                 ),
-              
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor),
+                    onPressed: () {
+                      onSearchTextChanged(controller.text);
+                    },
+                  ),
+                ],
               ),
             )
           ],
         ),
       );
 
-@override
-void dispose() {
-  debouncer.cancel();
-  super.dispose();
-}
-
- void debounce(
-    VoidCallback callback, {
-    Duration duration = const Duration(milliseconds: 300),
-  }) {
-    if (debouncer != null) {
-      debouncer.cancel();
-    }
-    debouncer = Timer(duration, callback);
-  }
-
-
-  onSearchTextChanged(String text) async => debounce(() async  {
-    
-    _searchList = [];
+  onClearText(String text) {
     if (text.isEmpty) {
-
-    } else {
       _searchList = [];
-      _mybook.forEach((mybook) {
-        if (mybook.name.toLowerCase().contains(text.toLowerCase())){
-          _searchList.add(mybook);
-          print('after $text');
-        }
-
-      });
-      
+      setState(() {});
+      return;
     }
-    setState(() {});
-    print('$_searchList');
-
   }
-  );
 
+  onSearchTextChanged(String text) {
+    _searchList = [];
 
+    if (text.isEmpty) {
+    } else {
+      _mybook.forEach((mybook) {
+        if (mybook.name.toLowerCase().contains(text.toLowerCase()))
+          _searchList.add(mybook);
+      });
+    }
+
+    setState(() {});
+    return;
+  }
 
   List<BookList> _searchList = [];
   List<BookList> _mybook = [];
@@ -119,7 +108,7 @@ void dispose() {
       body: FutureBuilder(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (_mybook.length > 0) {
             return buildlist();
           } else {
             return Center(
@@ -141,8 +130,8 @@ void dispose() {
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                     childAspectRatio: 0.8 / 1.2),
                 itemCount: _searchList.length,
                 itemBuilder: (context, index) {
@@ -156,29 +145,21 @@ void dispose() {
                                   DetailBook(book: mybook.getNo()),
                             ));
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                      child: Column(children: [
                         Stack(
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width:1,               
-                                      ),
-                                    ),
+                                border: Border.all(
+                                  width: 3,
+                                ),
+                              ),
                               child: Column(children: [
                                 Container(
-                                    height: MediaQuery.of(context).size.height*0.22,
-                                    width: MediaQuery.of(context).size.height*0.22,
+                                    height: 179,
                                     decoration: BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                          width: 1,
-                                        ),
-                                        bottom: BorderSide(
-                                          width: 1,
-                                        )               
+                                      border: Border.all(
+                                        width: 3,
                                       ),
                                     ),
                                     child: Image.network(
@@ -218,31 +199,27 @@ void dispose() {
                                   DetailBook(book: mybook.getNo()),
                             ));
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                      child: Column(children: [
                         Stack(
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width:1,               
-                                      ),
-                                    ),
+                                border: Border.all(
+                                  width: 3,
+                                ),
+                              ),
                               child: Column(children: [
                                 Container(
-                                    height: MediaQuery.of(context).size.height*0.22,
-                                    width: MediaQuery.of(context).size.height*0.22,
+                                    height: 179,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        width:1,               
+                                        width: 3,
                                       ),
                                     ),
                                     child: Image.network(
                                       'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${mybook.getNo()}.JPG',
                                       fit: BoxFit.fill,
                                     )),
-                                    
                                 Container(
                                     child: Text(mybook.name,
                                         overflow: TextOverflow.ellipsis))
@@ -259,17 +236,11 @@ void dispose() {
 
   Future<bool> getData() async {
     _mybook = [];
-    await firestore
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Map data = documentSnapshot.data();
-        _mybook = [];
-        data["owned_book"].forEach((doc) {
+    await firestore.collection('Books').get().then((QuerySnapshot snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        snapshot.docs.forEach((doc) {
           _mybook.add(
-            BookList(no: doc['code'], name: doc['name'], desc: ""),
+            BookList(no: doc['code'][0], name: doc.id, desc: doc['desc']),
           );
         });
       } else {
