@@ -7,15 +7,36 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../book.dart';
+import 'dart:async';
 
 class AddBook extends StatefulWidget {
   _AddBookPageState createState() => _AddBookPageState();
 }
 
 class _AddBookPageState extends State<AddBook> {
+  Timer debouncer;
   TextEditingController controller = new TextEditingController();
+
+  @override
+  void dispose() {
+    debouncer.cancel();
+    super.dispose();
+  }
+
+  void debounce(
+    VoidCallback callback, {
+    Duration duration = const Duration(milliseconds: 300),
+  }) {
+    if (debouncer != null) {
+      debouncer.cancel();
+    }
+    debouncer = Timer(duration, callback);
+  }
+
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
@@ -57,45 +78,29 @@ class _AddBookPageState extends State<AddBook> {
                       hintText: "Search",
                       border: InputBorder.none,
                       hintStyle: TextStyle(color: Colors.grey)),
-                  onChanged: onClearText,
+                  onChanged: onSearchTextChanged,
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.search,
-                        color: Theme.of(context).primaryColor),
-                    onPressed: () {
-                      onSearchTextChanged(controller.text);
-                    },
-                  ),
-                ],
               ),
             )
           ],
         ),
       );
 
-  onClearText(String text) {
-    if (text.isEmpty) {
-      _searchList = [];
-      setState(() {});
-      return;
-    }
-  }
-
-  onSearchTextChanged(String text) {
-    _searchList = [];
-
-    if (text.isEmpty) {
-    } else {
-      _mybook.forEach((mybook) {
-        if (mybook.name.toLowerCase().contains(text.toLowerCase()))
-          _searchList.add(mybook);
+  onSearchTextChanged(String text) async => debounce(() async {
+        _searchList = [];
+        if (text.isEmpty) {
+        } else {
+          _searchList = [];
+          _mybook.forEach((mybook) {
+            if (mybook.name.toLowerCase().contains(text.toLowerCase())) {
+              _searchList.add(mybook);
+              print('after $text');
+            }
+          });
+        }
+        setState(() {});
+        print('$_searchList');
       });
-    }
-
-    setState(() {});
-    return;
-  }
 
   List<BookList> _searchList = [];
   List<BookList> _mybook = [];
@@ -116,6 +121,17 @@ class _AddBookPageState extends State<AddBook> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          scanBarcodeNormal();
+        },
+        label: const Text('Add With Barcode'),
+        icon: ImageIcon(
+          AssetImage('assets/images/iconfinder_finance-10_808669.png'),
+          size: 25,
+        ),
+        backgroundColor: Colors.pink,
       ),
     );
   }
@@ -248,5 +264,30 @@ class _AddBookPageState extends State<AddBook> {
       }
     });
     return true;
+  }
+
+  String _scanBarcode = 'Unknown';
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+
+    if (barcodeScanRes != '-1') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailBook(book: barcodeScanRes),
+          ));
+    }
   }
 }

@@ -24,7 +24,6 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> _children = [
     MyBook(),
     AddBook(),
-    ScannerScreen(),
     ProfileScreen()
   ];
   void _onItemTapped(int index) {
@@ -48,13 +47,6 @@ class _BottomBarState extends State<BottomBar> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.menu_book_rounded, size: 30),
                 label: 'Add Book',
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage('assets/images/iconfinder_finance-10_808669.png'),
-                  size: 25,
-                ),
-                label: 'Scan Barcode',
                 backgroundColor: Colors.white),
             BottomNavigationBarItem(
                 icon: ImageIcon(

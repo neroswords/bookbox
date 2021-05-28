@@ -300,7 +300,6 @@ class _DetailBookState extends State<DetailBook> {
                             : SvgPicture.asset("assets/icons/book_grey.svg"),
                       ),
                       Positioned(
-
                           top: 34,
                           child: Text(volumn[index],
                               style: TextStyle(fontSize: 36)))
@@ -308,6 +307,11 @@ class _DetailBookState extends State<DetailBook> {
                   ))),
                   onTap: () {
                     checkbook(index);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Text('ok');
+                        });
                   },
                 );
               },
