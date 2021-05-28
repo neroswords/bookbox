@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'book.dart';
 import 'package:bookbox/detail_book.dart';
 import 'package:bookbox/BottomBar.dart';
 import 'package:search_widget/search_widget.dart';
@@ -9,11 +8,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyBook extends StatefulWidget {
-  _MyListPageState createState() => _MyListPageState();
+import '../book.dart';
+
+class AddBook extends StatefulWidget {
+  _AddBookPageState createState() => _AddBookPageState();
 }
 
-class _MyListPageState extends State<MyBook> {
+class _AddBookPageState extends State<AddBook> {
   TextEditingController controller = new TextEditingController();
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
@@ -75,7 +76,6 @@ class _MyListPageState extends State<MyBook> {
 
   onClearText(String text) {
     if (text.isEmpty) {
-      print('b');
       _searchList = [];
       setState(() {});
       return;
@@ -108,7 +108,7 @@ class _MyListPageState extends State<MyBook> {
       body: FutureBuilder(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (_mybook.length > 0) {
             return buildlist();
           } else {
             return Center(
@@ -236,16 +236,11 @@ class _MyListPageState extends State<MyBook> {
 
   Future<bool> getData() async {
     _mybook = [];
-    await firestore
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Map data = documentSnapshot.data();
-        data["owned_book"].forEach((doc) {
+    await firestore.collection('Books').get().then((QuerySnapshot snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        snapshot.docs.forEach((doc) {
           _mybook.add(
-            BookList(no: doc['code'], name: doc['name'], desc: ""),
+            BookList(no: doc['code'][0], name: doc.id, desc: doc['desc']),
           );
         });
       } else {

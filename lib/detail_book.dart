@@ -16,23 +16,61 @@ class DetailBook extends StatefulWidget {
 
 class _DetailBookState extends State<DetailBook> {
   // String title, brief, author, publisher, image;
-  // int volumn;
-  String title, image, author, brief, publisher;
+  List suplstdex, lstdex;
+  String title, image, author, brief, publisher, code;
   // widget.book;
 
   List volumn = [];
   List checked = [];
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void checkbook(index) {
+  Future<void> updateBook() {
+    return firestore
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .update({'owned_book': lstdex})
+        .then((value) => print("data update"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  void checkbook(index) async {
     setState(() {
-      print('clicked');
       if (checked[index] == true) {
+        suplstdex.asMap().forEach((idx, ownvol) {
+          if (ownvol["name"] == title) {
+            lstdex[idx]['on_hand'].removeWhere((item) => item == volumn[index]);
+            if (lstdex[idx]['on_hand'].isEmpty) {
+              lstdex.removeWhere((item) => item["name"] == title);
+            }
+          }
+        });
+        updateBook();
         checked[index] = false;
-        print('changed to false');
       } else {
+        if (suplstdex.isEmpty) {
+          lstdex.add({
+            "on_hand": [volumn[index]],
+            "name": title,
+            "code": code
+          });
+        } else {
+          suplstdex.asMap().forEach((idx, ownvol) {
+            if (ownvol["name"] == title) {
+              lstdex[idx]['on_hand'].add(volumn[index]);
+            }
+            if ((idx == (suplstdex.length - 1)) && ownvol["name"] != title) {
+              lstdex.add({
+                "on_hand": [volumn[index]],
+                "name": title,
+                "code": code
+              });
+            }
+          });
+        }
+
+        updateBook();
         checked[index] = true;
-        print('changed to true');
       }
     });
   }
@@ -47,9 +85,12 @@ class _DetailBookState extends State<DetailBook> {
                 {
                   snapshot.docs.forEach((doc) {
                     Map data = doc.data();
-                    String code = data["code"][0];
+                    code = data["code"][0];
                     volumn = data["volumn"];
                     title = doc.id;
+                    author = data["author"];
+                    brief = data["desc"];
+                    publisher = data["publisher"];
                     image =
                         'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${code}.JPG';
                   })
@@ -63,8 +104,15 @@ class _DetailBookState extends State<DetailBook> {
       if (documentSnapshot.exists) {
         checked = [];
         Map data = documentSnapshot.data();
-        data["owned_book"].forEach((ownvol) {
+        lstdex = data["owned_book"];
+        suplstdex = data["owned_book"];
+        for (var i in volumn) {
+          checked.add(false);
+        }
+
+        data["owned_book"].asMap().forEach((index, ownvol) {
           if (ownvol["name"] == title) {
+            checked = [];
             volumn.forEach((vol) {
               if (ownvol["on_hand"].contains(vol)) {
                 checked.add(true);
@@ -102,7 +150,7 @@ class _DetailBookState extends State<DetailBook> {
   Widget buildlist() {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.book),
+        title: Text(title),
       ),
       body: SingleChildScrollView(
           child: Container(
