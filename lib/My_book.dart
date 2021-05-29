@@ -13,15 +13,10 @@ class _MyListPageState extends State<MyBook> {
   Timer debouncer;
   TextEditingController controller = new TextEditingController();
 
-  int id;
-
-  void refreshData() {
-    id++;
-  }
-
-  FutureOr onGoBack() {
-    refreshData();
+  @override
+  initState() {
     setState(() {});
+    super.initState();
   }
 
   void navigateSecondPage(String index) {
@@ -32,10 +27,8 @@ class _MyListPageState extends State<MyBook> {
       ),
     )
         .then((_) {
-      onGoBack();
+      initState();
     });
-    // Route route = MaterialPageRoute(builder: (context) => DetailBook(book: index),);
-    // Navigator.push(context, route).then(onGoBack);
   }
 
   _appBar(height) => PreferredSize(
