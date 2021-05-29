@@ -54,8 +54,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _logo() {
     return Container(
-      width: 300,
-      height: 300,
+      width: 250,
+      height: 250,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/Empty-box.png'),
@@ -68,7 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget _loginBtn() {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
           color: Color(0xFF536DFE),
           borderRadius: BorderRadius.all(Radius.circular(50)),

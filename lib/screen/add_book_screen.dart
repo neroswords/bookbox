@@ -213,6 +213,7 @@ class _AddBookPageState extends State<AddBook> {
                             Container(
                               child: Column(children: [
                                 Container(
+                                  
                                     height: MediaQuery.of(context).size.height *
                                         0.22,
                                     width:
@@ -224,7 +225,7 @@ class _AddBookPageState extends State<AddBook> {
                                     ),
                                     child: Image.network(
                                       'https://www.phanpha.com/sites/default/files/imagecache/product_full/images01/${mybook.getNo()}.JPG',
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.fitHeight,
                                     )),
                                 Container(
                                     child: Text(mybook.name,

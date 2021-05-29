@@ -15,7 +15,7 @@ class _TermOfServiceState extends State<TermOfService> {
             appBar: AppBar(
                title: Text("Term Of Service"),
                centerTitle: true,
-               backgroundColor: Color(4278202449),
+               backgroundColor: Color(0xFF536DFE),
       ),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
