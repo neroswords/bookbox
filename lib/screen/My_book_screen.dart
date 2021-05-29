@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'book.dart';
-import 'package:bookbox/detail_book.dart';
+import '../model/book.dart';
+import 'package:bookbox/screen/Detail_book_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
@@ -13,21 +13,10 @@ class _MyListPageState extends State<MyBook> {
   Timer debouncer;
   TextEditingController controller = new TextEditingController();
 
-  @override
-  initState() {
-    setState(() {});
-    super.initState();
-  }
-
   void navigateSecondPage(String index) {
-    Navigator.of(context)
-        .push(
-      MaterialPageRoute(
-        builder: (context) => DetailBook(book: index),
-      ),
-    )
-        .then((_) {
-      initState();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailBook(book: index),),
+    ).then((_) {
+      setState(() {});
     });
   }
 

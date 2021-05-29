@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bookbox/detail_book.dart';
+import 'package:bookbox/screen/Detail_book_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import '../book.dart';
+import '../model/book.dart';
 import 'dart:async';
 
 class AddBook extends StatefulWidget {

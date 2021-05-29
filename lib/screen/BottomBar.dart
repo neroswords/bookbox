@@ -1,7 +1,7 @@
-import 'package:bookbox/screen/add_book_screen.dart';
+import 'package:bookbox/screen/Add_book_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbox/My_book.dart';
-import 'package:bookbox/screen/profile_screen.dart';
+import 'package:bookbox/screen/My_book_screen.dart';
+import 'package:bookbox/screen/Profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_bottom_navigation_bar/custom_bottom_navigation_bar.dart';
 import 'package:custom_bottom_navigation_bar/custom_bottom_navigation_bar_item.dart';

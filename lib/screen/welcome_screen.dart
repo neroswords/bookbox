@@ -1,9 +1,9 @@
-import 'package:bookbox/screen/login_screen.dart';
-import 'package:bookbox/screen/register_screen.dart';
+import 'package:bookbox/screen/Login_screen.dart';
+import 'package:bookbox/screen/Register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bookbox/BottomBar.dart';
+import 'package:bookbox/screen/BottomBar.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override

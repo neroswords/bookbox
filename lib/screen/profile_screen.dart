@@ -1,9 +1,9 @@
-import 'package:bookbox/screen/login_screen.dart';
+import 'package:bookbox/screen/Login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookbox/component/profilemenu.dart';
-import 'package:bookbox/screen/termofservice_screen.dart';
+import 'package:bookbox/screen/Term_of_service_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

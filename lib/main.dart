@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookbox/screen/welcome_screen.dart';
+import 'package:bookbox/screen/Welcome_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
