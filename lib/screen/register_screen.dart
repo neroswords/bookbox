@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       width: double.infinity,
       margin: EdgeInsets.only(top: 20, bottom: 50),
       decoration: BoxDecoration(
-          color: Color(0xff008FFF),
+          color: Color(0xFF536DFE),
           borderRadius: BorderRadius.all(Radius.circular(50)),
           boxShadow: [
             BoxShadow(
@@ -151,6 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+        // color : Color(0xFF536DFE)
       ),
     );
   }

@@ -163,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ]),
       child: FlatButton(
+
         onPressed: () async {
           try {
             UserCredential userCredential = await auth
