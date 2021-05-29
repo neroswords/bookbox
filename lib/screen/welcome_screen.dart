@@ -39,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
-                  fontSize: 40,
+                  fontSize: 36,
                 ),
               ),
               _logo(),
@@ -54,8 +54,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _logo() {
     return Container(
-      width: 350,
-      height: 350,
+      width: 300,
+      height: 300,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/Empty-box.png'),
