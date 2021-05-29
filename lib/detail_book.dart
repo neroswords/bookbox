@@ -1,24 +1,20 @@
-import 'package:bookbox/BottomBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbox/book.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DetailBook extends StatefulWidget {
   final String book;
-  // final String title;
   DetailBook({Key key, this.book}) : super(key: key);
   @override
   _DetailBookState createState() => _DetailBookState();
 }
 
 class _DetailBookState extends State<DetailBook> {
-  // String title, brief, author, publisher, image;
   List suplstdex, lstdex;
   String title, image, author, brief, publisher, code;
-  // widget.book;
 
   List volumn = [];
   List checked = [];
@@ -129,6 +125,27 @@ class _DetailBookState extends State<DetailBook> {
     return true;
   }
 
+  Future<bool> _onwillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,12 +168,13 @@ class _DetailBookState extends State<DetailBook> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        backgroundColor: Color(0xFF536DFE),
       ),
       body: SingleChildScrollView(
           child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/backgrounds/wood.jpg"),
+            image: AssetImage("assets/backgrounds/grey_background.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -167,7 +185,7 @@ class _DetailBookState extends State<DetailBook> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40.0),
                 border: Border.all(
-                  color: Colors.brown,
+                  color: Colors.black,
                   width: 5,
                 ),
               ),
@@ -184,13 +202,6 @@ class _DetailBookState extends State<DetailBook> {
               width: 175,
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(right: 0, left: 10.0),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.brown,
-                    width: 5,
-                  ),
-                  borderRadius: BorderRadius.circular(40.0),
-                  color: Colors.white),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -198,30 +209,78 @@ class _DetailBookState extends State<DetailBook> {
                     alignment: Alignment.centerLeft,
                     child: Container(
                         child: Text.rich(TextSpan(children: <TextSpan>[
-                      TextSpan(text: 'ชื่อเรื่อง '),
                       TextSpan(
-                          text: ': $title',
-                          style: TextStyle(fontWeight: FontWeight.bold))
+                        text: 'ชื่อเรื่อง \n',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      TextSpan(
+                        text: ': $title',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
                     ]))),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
                         child: Text.rich(TextSpan(children: <TextSpan>[
-                      TextSpan(text: 'ผู้แต่ง '),
                       TextSpan(
-                          text: ': $author',
-                          style: TextStyle(fontWeight: FontWeight.bold))
+                        text: 'ผู้แต่ง \n',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      TextSpan(
+                        text: ': $author',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
                     ]))),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
                         child: Text.rich(TextSpan(children: <TextSpan>[
-                      TextSpan(text: 'สำนักพิมพ์ '),
                       TextSpan(
-                          text: ': $publisher',
-                          style: TextStyle(fontWeight: FontWeight.bold))
+                        text: 'สำนักพิมพ์ \n',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      TextSpan(
+                        text: ': $publisher',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
                     ]))),
                   )
                 ],
@@ -238,12 +297,16 @@ class _DetailBookState extends State<DetailBook> {
             ),
             margin: const EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.centerLeft,
-            child: Text('เรื่องย่อ : ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                )),
+            child: Text(
+              'เรื่องย่อ : ',
+              style: GoogleFonts.sarabun(
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
           Container(
             decoration: BoxDecoration(
@@ -254,8 +317,16 @@ class _DetailBookState extends State<DetailBook> {
               ),
             ),
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: Text('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t$brief',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t$brief',
+              style: GoogleFonts.sarabun(
+                textStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
           Container(
             decoration: BoxDecoration(
@@ -265,14 +336,18 @@ class _DetailBookState extends State<DetailBook> {
                 width: 2,
               ),
             ),
-            margin: const EdgeInsets.only(left: 20, right: 20),
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
             alignment: Alignment.centerLeft,
-            child: Text('รายการหนังสือทั้งหมด : ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                )),
+            child: Text(
+              'รายการหนังสือทั้งหมด : ',
+              style: GoogleFonts.sarabun(
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
@@ -307,11 +382,6 @@ class _DetailBookState extends State<DetailBook> {
                   ))),
                   onTap: () {
                     checkbook(index);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Text('ok');
-                        });
                   },
                 );
               },

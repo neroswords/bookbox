@@ -1,67 +1,47 @@
 import 'package:bookbox/screen/add_book_screen.dart';
-import 'package:bookbox/screen/barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbox/My_book.dart';
 import 'package:bookbox/screen/profile_screen.dart';
-import 'package:bookbox/detail_book.dart';
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:custom_bottom_navigation_bar/custom_bottom_navigation_bar.dart';
+import 'package:custom_bottom_navigation_bar/custom_bottom_navigation_bar_item.dart';
 
 class BottomBar extends StatefulWidget {
-  // int index;
-  // BottomBar(Key key) : super(key: key);
-
   @override
   _BottomBarState createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
-  final List<Widget> _children = [
-    MyBook(),
-    AddBook(),
-    ProfileScreen()
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   Widget build(BuildContext context) {
-    // _selectedIndex = widget.index;
+    PageController _pageController = PageController();
     return new Scaffold(
-        body: _children[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage(
-                    'assets/images/iconfinder_office-04_809571.png')),
-                label: 'My Book',
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.menu_book_rounded, size: 30),
-                label: 'Add Book',
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(
-                      'assets/images/iconfinder_icons_user2_1564535.png'),
-                  size: 25,
-                ),
-                label: 'Profile',
-                backgroundColor: Colors.white),
-          ],
-          currentIndex: _selectedIndex,
-          elevation: 0.5,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
-        ));
+      body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: <Widget>[MyBook(), AddBook(), ProfileScreen()]),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        items: [
+          CustomBottomNavigationBarItem(
+            icon: Icons.menu_book_rounded,
+            title: "My Book",
+          ),
+          CustomBottomNavigationBarItem(
+            icon: Icons.add_box_rounded,
+            title: "Add Book",
+          ),
+          CustomBottomNavigationBarItem(
+            icon: Icons.person_pin,
+            title: "Profile",
+          ),
+        ],
+        onTap: (index) {
+          _pageController.animateToPage(index,
+              curve: Curves.fastLinearToSlowEaseIn,
+              duration: Duration(milliseconds: 600));
+        },
+        backgroundColor: Color(0xFF536DFE),
+        itemBackgroudnColor: Color(0xFF536DFE),
+      ),
+    );
   }
 }

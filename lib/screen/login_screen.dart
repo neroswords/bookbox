@@ -2,7 +2,6 @@ import 'package:bookbox/screen/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bookbox/My_book.dart';
 import 'package:bookbox/BottomBar.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -64,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      // padding: EdgeInsets.symmetric(horizontal: 20),
       margin: EdgeInsets.only(bottom: 20),
       child: TextField(
         obscureText: isPassword,
@@ -154,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       margin: EdgeInsets.only(top: 20, bottom: 50),
       decoration: BoxDecoration(
-          color: Color(0xff008FFF),
+          color: Color(0xFF536DFE),
           borderRadius: BorderRadius.all(Radius.circular(50)),
           boxShadow: [
             BoxShadow(
@@ -169,8 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
           try {
             UserCredential userCredential = await auth
                 .signInWithEmailAndPassword(email: _email, password: _password);
-            // Get.toNamed('/profile');
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => BottomBar()),
             );
@@ -205,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Login",
           style: GoogleFonts.nunito(
             textStyle: TextStyle(
-              fontSize: 40,
+              fontSize: 60,
               fontWeight: FontWeight.w800,
               color: Color(0xff000912),
               letterSpacing: 2,
@@ -214,43 +211,3 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 }
-
-// Widget _terms() {
-//   return Container(
-//     padding: EdgeInsets.only(top: 10, bottom: 18),
-//     child: FlatButton(
-//       onPressed: () => {print("Terms pressed.")},
-//       child: Text(
-//         "Terms & Conditions",
-//         style: GoogleFonts.montserrat(
-//           textStyle: TextStyle(
-//             color: Color(0xffA6B0BD),
-//             fontWeight: FontWeight.w400,
-//             fontSize: 12,
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
-// Widget _logo() {
-//   return Container(
-//     margin: EdgeInsets.only(top: 100),
-//     child: Stack(
-//       // overflow: Overflow.visible,
-//       children: [
-//         Positioned(
-//             child: Container(
-//               // width: 100,
-//               // height: 100,
-//               decoration: BoxDecoration(
-//                 shape: BoxShape.circle,
-//                 color: Color(0xff008FFF),
-//               ),
-//             )
-//         ),
-//       ],
-//     )
-//   );
-// }

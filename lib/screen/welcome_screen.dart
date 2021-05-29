@@ -1,7 +1,9 @@
 import 'package:bookbox/screen/login_screen.dart';
 import 'package:bookbox/screen/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bookbox/BottomBar.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -9,8 +11,19 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    auth.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomBar()),
+        );
+      }
+    });
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -26,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 40,
                 ),
               ),
               _logo(),
@@ -41,21 +54,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _logo() {
     return Container(
-        margin: EdgeInsets.only(top: 100),
-        child: Stack(
-          // overflow: Overflow.visible,
-          children: [
-            Positioned(
-                child: Container(
-              width: 100,
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xff008FFF),
-              ),
-            )),
-          ],
-        ));
+      width: 350,
+      height: 350,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/Empty-box.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+    );
   }
 
   Widget _loginBtn() {
@@ -63,7 +70,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-          color: Color(0xff008FFF),
+          color: Color(0xFF536DFE),
           borderRadius: BorderRadius.all(Radius.circular(50)),
           boxShadow: [
             BoxShadow(
@@ -75,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ]),
       child: FlatButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => LoginScreen()),
           );
@@ -97,22 +104,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Widget _signupBtn() {
-    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
     return Container(
       width: double.infinity,
-      // margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          border: Border.all(width: 1.0, color: const Color(0x60008FFF)),
-          boxShadow: [
-            BoxShadow(
-                // color: Color(0x60008FFF),
-                // blurRadius: 10,
-                // offset: Offset(0,1),
-                // spreadRadius: 0,
-                ),
-          ]),
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        border: Border.all(width: 1.0, color: const Color(0x60008FFF)),
+      ),
       child: FlatButton(
         onPressed: () {
           Navigator.push(

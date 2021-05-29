@@ -1,12 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbox/detail_book.dart';
-import 'package:bookbox/BottomBar.dart';
-import 'package:search_widget/search_widget.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -45,23 +39,20 @@ class _AddBookPageState extends State<AddBook> {
               // Background
               child: Center(
                 child: Text(
-                  "My Book",
+                  "Add Book",
                   style: TextStyle(
-                      fontSize: 30.0,
+                      fontSize: 40.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontFamily: 'RobotoMono'),
                 ),
               ),
-              color: Theme.of(context).primaryColor,
+              color: Color(0xFF536DFE),
               height: height + 75,
               width: MediaQuery.of(context).size.width,
             ),
-
-            Container(), // Required some widget in between to float AppBar
-
+            Container(),
             Positioned(
-              // To take AppBar Size only
               top: 100.0,
               left: 20.0,
               right: 20.0,
@@ -126,12 +117,15 @@ class _AddBookPageState extends State<AddBook> {
         onPressed: () {
           scanBarcodeNormal();
         },
-        label: const Text('Add With Barcode'),
+        label: const Text('Add With Barcode',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )),
         icon: ImageIcon(
           AssetImage('assets/images/iconfinder_finance-10_808669.png'),
-          size: 25,
+          size: 35,
         ),
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(4278202449),
       ),
     );
   }
@@ -146,8 +140,8 @@ class _AddBookPageState extends State<AddBook> {
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
                     childAspectRatio: 0.8 / 1.2),
                 itemCount: _searchList.length,
                 itemBuilder: (context, index) {
@@ -165,17 +159,15 @@ class _AddBookPageState extends State<AddBook> {
                         Stack(
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 3,
-                                ),
-                              ),
                               child: Column(children: [
                                 Container(
-                                    height: 179,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.22,
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        width: 3,
+                                        width: 1,
                                       ),
                                     ),
                                     child: Image.network(
@@ -200,8 +192,8 @@ class _AddBookPageState extends State<AddBook> {
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
                     childAspectRatio: 0.8 / 1.2),
                 itemCount: _mybook.length,
                 itemBuilder: (context, index) {
@@ -219,17 +211,15 @@ class _AddBookPageState extends State<AddBook> {
                         Stack(
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 3,
-                                ),
-                              ),
                               child: Column(children: [
                                 Container(
-                                    height: 179,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.22,
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        width: 3,
+                                        width: 1,
                                       ),
                                     ),
                                     child: Image.network(
